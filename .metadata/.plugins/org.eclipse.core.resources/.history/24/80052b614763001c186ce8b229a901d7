@@ -1,0 +1,246 @@
+package com.example.demo.service;
+
+import java.util.Collections;
+import java.util.InputMismatchException;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.model.Gender;
+import com.example.demo.model.Movies;
+import com.example.demo.repository.MovieRepository;
+
+@Service
+public class MovieService {
+	
+	public final MovieRepository movieRepository; 
+	
+	//Conexion con el repositorio;
+	@Autowired
+	public MovieService(MovieRepository movieRepository) {
+		this.movieRepository = movieRepository;
+	}
+	
+	
+	//Devuelve todos los items que hay en la tabla
+	public List<Movies> getAllMovies(){
+		return movieRepository.findAll();
+	}
+
+
+	//Crea una peli nueva 
+	public Movies createMovie(Movies movie) {
+		
+		movie.setTitle(movie.getTitle().toLowerCase().trim());
+				
+		this.movieRepository.save(movie);
+		
+		return movie;
+	}
+
+
+	//Elimina una peli
+	public Optional<Movies> deleteMovie(Integer id) {
+		
+		this.movieRepository.deleteById(id);
+	
+		return null;
+	}
+	
+	public Optional<Movies> searchMovieById(Integer id){
+		return this.movieRepository.findById(id);
+	}
+
+
+	
+	public boolean updateMovie(Integer id, Movies movie) {
+
+		Optional <Movies> mo = null; 
+			
+		//Buscamos el ID dentro de mi BB.DD
+		mo = this.movieRepository.findById(id);
+		
+		//Si no lo encuentra, retorna un false 
+		if (mo.isEmpty()) {
+			
+			System.out.println("You've ingress an unexiting ID");
+			
+			return false; 
+			
+		//si lo encuentra, retorna un true, y modifica la movie
+		} else {
+			
+			this.movieRepository.save(movie);
+			
+			return true; 
+		}
+	}
+
+
+	public List<Movies> getMoviesByGender(Gender gender) {
+
+		return this.movieRepository.getMoviesByGender(gender);
+		
+	}
+
+
+	//Busca por titulo
+	public List<Movies> findByTitle(String title) {
+		
+//		title = title.toLowerCase().trim();
+		
+		return movieRepository.findByTitle(title);
+	}
+}
+
+	
+//	//Atributo
+//	private List <Movies> listMovies;
+//	
+//	//Constructor
+//	public MovieService(List <Movies> movies) {
+//					
+//	//Este metodo me rompe el código. 
+//	//listMovies.sort(Movies.compararId); //Esto podemos hacerlo, porque compararDuracion es un metodo estatico
+//
+//	this.listMovies = movies;
+//	
+//	}
+//	
+//
+//	//Metodo que devuelve todas las peliculas
+//	public List<Movies> getAllMovies() {
+//		return this.listMovies;
+//	}
+//	
+//	
+//	//Metodo para agregar una nueva pelicula 
+//	public Movies createMovie(Movies movie) {
+//		
+//		//nos aseguramos de que entre un valor válido
+//		if (movie.getId() != null) {
+//			
+//			//Nos aseguramos que no exista el id de esa pelicula
+//			for (Movies m : this.listMovies) {
+//			
+//				if (m.getId() == movie.getId()) {
+//					
+//					System.out.println("Error");
+//					
+//					return null;
+//				}
+//				
+//			}
+//		
+//		} else return null;
+//		
+//		//Si todo va bien, agregamos la nueva pelicula
+//		this.listMovies.add(movie);
+//		
+//		return movie;
+//	}
+//	
+//	
+//	//Metodo para eliminar una movie
+//	public boolean deleteMovie(Integer id) {
+//		
+//		//Buscamos el id de la pelicula en nuestra lista
+//		for (Movies m : this.listMovies) {
+//			
+//			if (m.getId() == id) {
+//				
+//				this.listMovies.remove(m);
+//				
+//				//Si lo encuentra, nos devuelve un true
+//				return true; 
+//				
+//			} 
+//			
+//		//Si no existe el id, nos devuelve un false 
+//		} return false; 
+//	}
+//	
+//
+//	//Metodo para actualizar una pelicula
+//	public Optional <Movies> updateMovie(Movies movie, Integer id) {
+//		
+//		//Buscamos la pelicula a actualizar
+//		for (Movies m : this.listMovies) {
+//			if (id == m.getId()) {
+//				
+//				this.listMovies.remove(m);
+//				
+//				this.listMovies.add(movie);
+//				
+//				//En caso de que no exista lo buscado, devuelva un objeto vacio.
+//				return Optional.ofNullable(movie); 
+//			}
+//		}
+//		
+//		return null;
+//	}
+//
+//
+//	//Metodo que busca una peli por ID
+//	public Movies getSpecificMovie(Integer id) {
+//				
+//		//La idea es que, al buscar el id, si no lo encuentra, le tire ese mensaje!!!
+//		return this.listMovies.stream().
+//				filter(m -> m.getId() == id).
+//				findFirst().
+//				orElseThrow(() -> new RuntimeException("This movie's id doesn't exists!"));
+//	}
+//	
+//	
+//	//Metodo que busca peli por nombre 
+//	public Optional <Movies> getMovieByTitle(String title){
+//	
+//		for (Movies m : this.listMovies) {
+//			if ((m.getTitle().toLowerCase().replaceAll("\\s+","")).equals(title)) {
+//				return Optional.ofNullable(m);
+//			}
+//		}
+//		
+//		//En caso de q no encuentre la peli
+//		return null;
+//	}
+//}
+	
+	
+//	public final MovieRepository movieRepository; 
+	
+	//Conexion con el repositorio;
+//	@Autowired
+//	public MovieService(MovieRepository movieRepository) {
+//		this.movieRepository = movieRepository;
+//	}
+	
+	
+	//Devuelve todos los items que hay en la tabla
+//	public List<Movies> getAllMovies(){
+//		return movieRepository.findAll();
+//	}
+
+
+//	public Movies createMovie(Movies movie) {
+//		
+//		this.movieRepository.save(movie);
+//		
+//		return movie;
+//	}
+
+
+//	public void deleteMovie(Integer id) {
+//		
+//		Optional<Movies> movie = movieRepository.findById(id);
+//		
+//		System.out.println(movie);
+//	}
+
+//	public Movies updateMovie(Movies movie, Integer id) {
+//		
+//	}
+//}

@@ -1,0 +1,16 @@
+package com.example.demo.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import com.example.demo.model.Gender;
+import com.example.demo.model.Movies;
+
+public interface MovieRepository extends JpaRepository<Movies, Integer> {
+
+	@Query ("SELECT p FROM Movie m WHERE m.classified LIKE %:classified%")
+	List<Movies> getMoviesByGender(Gender gender);
+
+}

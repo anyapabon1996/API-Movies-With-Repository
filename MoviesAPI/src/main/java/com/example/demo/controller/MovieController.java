@@ -25,7 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RequestMapping("/AnyaMovie/v1") //point base de entrada en la URL
 @RestController
-//@CrossOrigin(origins = "http:/localhost:5050")
+@CrossOrigin(origins = "http:/localhost:5050")
 public class MovieController {
 
 	//Atributo
